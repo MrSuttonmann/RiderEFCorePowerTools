@@ -10,7 +10,9 @@ permissions:
 
 env:
   EFPT_REPOSITORY: ErikEJ/EFCorePowerTools
-  EFPT_REF: 0c1f6ad3daaa1ccfd52d276cdbf3b668bd3095e0
+  # Last upstream commit with EF Core 8 and 9 support: upstream removed the EF Core 8/9 runners in
+  # c1d1f89 (#3562, "Remove old .NET version support"). This plugin still offers EF Core 8, 9 and 10.
+  EFPT_REF: 43d051ad1f38d72893d6cf563dbc03df533a91a0
 
 jobs:
   release:
