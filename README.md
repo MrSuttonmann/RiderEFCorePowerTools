@@ -1,6 +1,7 @@
 # EF Core Power Tools for Rider
 
-A JetBrains Rider port of the [EF Core Power Tools](https://github.com/ErikEJ/EFCorePowerTools) Visual Studio extension.
+A JetBrains Rider port of the [EF Core Power Tools](https://github.com/ErikEJ/EFCorePowerTools) Visual Studio extension
+by Erik Ejlskov Jensen. This is an unofficial port; it is not affiliated with or endorsed by the original project.
 It ships the **same .NET runners** as the VSIX (`efreveng` for reverse engineering, `efpt` for model inspection), so
 generated code and the `efpt.config.json` / `efpt.renaming.json` files are identical to what Visual Studio produces —
 teams can mix both IDEs on one config.
@@ -57,3 +58,11 @@ The end-to-end runner test is opt-in: set `EFPT_E2E_RUNNER` (extracted `efreveng
 (SQLite database with `Artist`, `Album`, `AlbumView`) and run `./gradlew test`.
 
 See [docs/PORTING.md](docs/PORTING.md) for the architecture.
+
+## Credits and license
+
+All functionality originates from [EF Core Power Tools](https://github.com/ErikEJ/EFCorePowerTools)
+(MIT License, Copyright (c) 2018 Erik Ejlskov Jensen). This repository's Kotlin code is a translation of that
+project's Visual Studio extension, and the plugin bundles .NET runners built from it. See
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for the full license text. Please report issues with the
+Rider port here, not to the upstream project.

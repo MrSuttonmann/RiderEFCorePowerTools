@@ -4,7 +4,8 @@
     <vendor>EF Core Power Tools for Rider</vendor>
     <description><![CDATA[
 <p>Reverse engineering, model visualization and inspection for EF Core in JetBrains Rider -
-a port of the <a href="https://github.com/ErikEJ/EFCorePowerTools">EF Core Power Tools</a> Visual Studio extension.</p>
+an unofficial port of the <a href="https://github.com/ErikEJ/EFCorePowerTools">EF Core Power Tools</a> Visual Studio
+extension by Erik Ejlskov Jensen (MIT License). Source: <a href="https://github.com/MrSuttonmann/RiderEFCorePowerTools">MrSuttonmann/RiderEFCorePowerTools</a>.</p>
 <ul>
   <li>Reverse engineer a DbContext and entity classes from SQL Server, Azure SQL, SQLite, PostgreSQL, MySQL, Oracle, Firebird, Snowflake or a SQL Server .dacpac / Database Project</li>
   <li>Refresh from <code>efpt.config.json</code>, edit and run <code>efcpt-config.json</code></li>
