@@ -1,0 +1,15 @@
+<idea-plugin>
+    <!-- Database tool window (counterpart of Visual Studio's Server Explorer data connection commands) -->
+    <actions>
+        <group id="EFCorePowerTools.DataSourceGroup">
+            <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
+            <separator/>
+            <action id="EFCorePowerTools.DataSourceReverseEngineer" class="com.efpt.rider.actions.DataSourceReverseEngineerAction"
+                    text="EF Core Power Tools - Reverse Engineer" icon="AllIcons.Nodes.DataTables"/>
+            <action id="EFCorePowerTools.DataSourceErDiagram" class="com.efpt.rider.actions.DataSourceErDiagramAction"
+                    text="EF Core Power Tools - ER Diagram"/>
+            <action id="EFCorePowerTools.DataSourceAnalyze" class="com.efpt.rider.actions.DataSourceAnalyzeAction"
+                    text="EF Core Power Tools - Analyze (experimental)"/>
+        </group>
+    </actions>
+</idea-plugin>
