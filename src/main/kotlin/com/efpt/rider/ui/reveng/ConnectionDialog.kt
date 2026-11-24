@@ -79,6 +79,7 @@ object ConnectionDialog {
             sampleField.text = sample(typeModel.selected)
             testButton.addActionListener { testConnection() }
             init()
+            initValidation()
         }
 
         override fun createCenterPanel(): JComponent = panel {
@@ -96,8 +97,11 @@ object ConnectionDialog {
 
         override fun doValidate(): ValidationInfo? {
             // Ok_CanExecute: name and connection string are required
-            if (nameField.text.isNullOrBlank()) return ValidationInfo("", nameField)
-            if (connectionStringArea.text.isNullOrBlank()) return ValidationInfo("", connectionStringArea)
+            // Rider: explain the problem and keep OK clickable; the check re-runs as the user types (initValidation).
+            if (nameField.text.isNullOrBlank()) return ValidationInfo("Enter a name for the connection", nameField).withOKEnabled()
+            if (connectionStringArea.text.isNullOrBlank()) {
+                return ValidationInfo("Enter a connection string (see Sample below)", connectionStringArea).withOKEnabled()
+            }
             return null
         }
 
