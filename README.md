@@ -66,3 +66,5 @@ All functionality originates from [EF Core Power Tools](https://github.com/ErikE
 project's Visual Studio extension, and the plugin bundles .NET runners built from it. See
 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for the full license text. Please report issues with the
 Rider port here, not to the upstream project.
+
+The Rider port itself is also licensed under the [MIT License](LICENSE).

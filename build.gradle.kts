@@ -152,7 +152,7 @@ tasks.withType<org.jetbrains.intellij.platform.gradle.tasks.PrepareSandboxTask>(
         into(pluginName.map { "$it/tools" })
     }
     // MIT notice for the bundled EF Core Power Tools binaries and ported code.
-    from(layout.projectDirectory.file("THIRD-PARTY-NOTICES.md")) {
+    from(layout.projectDirectory.file("THIRD-PARTY-NOTICES.md"), layout.projectDirectory.file("LICENSE")) {
         into(pluginName)
     }
 }
