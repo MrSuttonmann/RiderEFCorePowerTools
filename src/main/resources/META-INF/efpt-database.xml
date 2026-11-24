@@ -5,11 +5,11 @@
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
             <separator/>
             <action id="EFCorePowerTools.DataSourceReverseEngineer" class="com.efpt.rider.actions.DataSourceReverseEngineerAction"
-                    text="EF Core Power Tools - Reverse Engineer" icon="AllIcons.Nodes.DataTables"/>
+                    text="Power Tools for EF Core - Reverse Engineer" icon="AllIcons.Nodes.DataTables"/>
             <action id="EFCorePowerTools.DataSourceErDiagram" class="com.efpt.rider.actions.DataSourceErDiagramAction"
-                    text="EF Core Power Tools - ER Diagram"/>
+                    text="Power Tools for EF Core - ER Diagram"/>
             <action id="EFCorePowerTools.DataSourceAnalyze" class="com.efpt.rider.actions.DataSourceAnalyzeAction"
-                    text="EF Core Power Tools - Analyze (experimental)"/>
+                    text="Power Tools for EF Core - Analyze (experimental)"/>
         </group>
     </actions>
 </idea-plugin>

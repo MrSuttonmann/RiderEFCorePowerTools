@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference
 
 /** Equivalents of VSHelper, VS.StatusBar, VS.Documents and EFCorePowerToolsPackage.LogError. */
 object Ui {
-    const val TITLE = "EF Core Power Tools"
+    const val TITLE = "Power Tools for EF Core"
     private val LOG = logger<Ui>()
 
     // ---------------------------------------------------------------- message boxes (any thread)
@@ -43,7 +43,7 @@ object Ui {
     // ---------------------------------------------------------------- notifications / status
 
     fun notify(project: Project?, content: String, type: NotificationType = NotificationType.INFORMATION) {
-        NotificationGroupManager.getInstance().getNotificationGroup("EF Core Power Tools")
+        NotificationGroupManager.getInstance().getNotificationGroup("Power Tools for EF Core")
             .createNotification(TITLE, content, type)
             .notify(project)
     }

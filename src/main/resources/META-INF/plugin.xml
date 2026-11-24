@@ -1,7 +1,7 @@
 <idea-plugin>
-    <id>com.efpt.rider</id>
-    <name>EF Core Power Tools for Rider</name>
-    <vendor>EF Core Power Tools for Rider</vendor>
+    <id>io.github.mrsuttonmann.efcorepowertools</id>
+    <name>Power Tools for EF Core</name>
+    <vendor url="https://github.com/MrSuttonmann">Ted Hyde</vendor>
     <description><![CDATA[
 <p>Reverse engineering, model visualization and inspection for EF Core in JetBrains Rider -
 an unofficial port of the <a href="https://github.com/ErikEJ/EFCorePowerTools">EF Core Power Tools</a> Visual Studio
@@ -22,16 +22,16 @@ extension by Erik Ejlskov Jensen (MIT License). Source: <a href="https://github.
         <applicationService serviceImplementation="com.efpt.rider.settings.EfptSettings"/>
         <applicationService serviceImplementation="com.efpt.rider.connections.ConnectionStore"/>
         <applicationConfigurable parentId="tools" instance="com.efpt.rider.settings.EfptConfigurable"
-                                 id="com.efpt.rider.settings" displayName="EF Core Power Tools"/>
-        <notificationGroup id="EF Core Power Tools" displayType="BALLOON"/>
+                                 id="com.efpt.rider.settings" displayName="Power Tools for EF Core"/>
+        <notificationGroup id="Power Tools for EF Core" displayType="BALLOON"/>
         <!-- Rider has no DGML editor; open .dgml files (DbContext / database diagrams) as XML. -->
         <fileType name="XML" extensions="dgml"/>
     </extensions>
 
     <actions>
-        <!-- Project context menu: "EF Core Power Tools" -->
+        <!-- Project context menu -->
         <group id="EFCorePowerTools.ProjectGroup" class="com.efpt.rider.actions.EfptProjectGroup" popup="true"
-               text="EF Core Power Tools" icon="AllIcons.Nodes.DataTables">
+               text="Power Tools for EF Core" icon="AllIcons.Nodes.DataTables">
             <add-to-group group-id="SolutionExplorerPopupMenu" anchor="last"/>
 
             <action id="EFCorePowerTools.ReverseEngineer" class="com.efpt.rider.actions.ReverseEngineerAction"
@@ -62,9 +62,9 @@ extension by Erik Ejlskov Jensen (MIT License). Source: <a href="https://github.
                     text="Analyze (preview)" description="Analyze the SQL Database Project with SQL Server rules"/>
             <separator/>
             <action id="EFCorePowerTools.Options" class="com.efpt.rider.actions.OptionsAction"
-                    text="Options" description="EF Core Power Tools options"/>
+                    text="Options" description="Power Tools for EF Core options"/>
             <action id="EFCorePowerTools.About" class="com.efpt.rider.actions.AboutAction"
-                    text="About" description="About EF Core Power Tools"/>
+                    text="About" description="About Power Tools for EF Core"/>
         </group>
 
         <!-- SQL Database Project context menu -->
@@ -78,15 +78,15 @@ extension by Erik Ejlskov Jensen (MIT License). Source: <a href="https://github.
         <group id="EFCorePowerTools.ConfigFileGroup">
             <add-to-group group-id="SolutionExplorerPopupMenu" anchor="last"/>
             <action id="EFCorePowerTools.ConfigEdit" class="com.efpt.rider.actions.ConfigEditAction"
-                    text="EF Core Power Tools - Edit" icon="AllIcons.Actions.Edit"/>
+                    text="Power Tools for EF Core - Edit" icon="AllIcons.Actions.Edit"/>
             <action id="EFCorePowerTools.ConfigRefresh" class="com.efpt.rider.actions.ConfigRefreshAction"
-                    text="EF Core Power Tools - Refresh" icon="AllIcons.Actions.Refresh"/>
+                    text="Power Tools for EF Core - Refresh" icon="AllIcons.Actions.Refresh"/>
             <action id="EFCorePowerTools.DabStart" class="com.efpt.rider.actions.DabStartAction"
-                    text="EF Core Power Tools - Start DAB" icon="AllIcons.Actions.Execute"/>
+                    text="Power Tools for EF Core - Start DAB" icon="AllIcons.Actions.Execute"/>
         </group>
 
         <!-- Tools menu -->
-        <group id="EFCorePowerTools.ToolsGroup" popup="true" text="EF Core Power Tools" icon="AllIcons.Nodes.DataTables">
+        <group id="EFCorePowerTools.ToolsGroup" popup="true" text="Power Tools for EF Core" icon="AllIcons.Nodes.DataTables">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <reference ref="EFCorePowerTools.ReverseEngineer"/>
             <reference ref="EFCorePowerTools.ReverseEngineerRefresh"/>

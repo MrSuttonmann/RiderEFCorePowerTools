@@ -9,7 +9,7 @@ import com.intellij.ui.dsl.builder.bindText
 import com.intellij.ui.dsl.builder.panel
 
 /** Settings | Tools | EF Core Power Tools. */
-class EfptConfigurable : BoundConfigurable("EF Core Power Tools") {
+class EfptConfigurable : BoundConfigurable("Power Tools for EF Core") {
     private val s get() = EfptSettings.instance
 
     override fun createPanel(): DialogPanel = panel {

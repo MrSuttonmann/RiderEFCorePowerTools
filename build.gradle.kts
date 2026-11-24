@@ -64,7 +64,7 @@ intellijPlatform {
     buildSearchableOptions = false
     instrumentCode = false
     pluginConfiguration {
-        id = "com.efpt.rider"
+        id = "io.github.mrsuttonmann.efcorepowertools"
         name = providers.gradleProperty("pluginName")
         version = providers.gradleProperty("pluginVersion")
         ideaVersion {

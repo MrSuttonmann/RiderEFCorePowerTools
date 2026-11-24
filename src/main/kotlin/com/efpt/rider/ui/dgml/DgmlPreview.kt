@@ -65,7 +65,7 @@ object DgmlPreview {
         // Default editor of .svg = the IDE image viewer (with its zoom controls), not the XML text editor.
         Ui.openPreview(project, svgFile.path)
 
-        NotificationGroupManager.getInstance().getNotificationGroup("EF Core Power Tools")
+        NotificationGroupManager.getInstance().getNotificationGroup("Power Tools for EF Core")
             .createNotification(
                 Ui.TITLE,
                 "Diagram of ${dgml.name} ($count nodes). Rider has no DGML viewer: the diagram was rendered to SVG; the .dgml file is at ${dgml.path}",

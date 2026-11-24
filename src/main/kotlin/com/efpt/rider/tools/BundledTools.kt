@@ -15,7 +15,7 @@ import kotlin.io.path.name
 
 /** Locates and unpacks the .NET runners shipped in the plugin's "tools" folder (same zips as the VSIX). */
 object BundledTools {
-    const val PLUGIN_ID = "com.efpt.rider"
+    const val PLUGIN_ID = "io.github.mrsuttonmann.efcorepowertools"
 
     private val plugin get() = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))
 
@@ -23,7 +23,7 @@ object BundledTools {
 
     val toolsDir: Path
         get() = plugin?.pluginPath?.resolve("tools")
-            ?: throw IllegalStateException("Unable to locate the EF Core Power Tools plugin folder")
+            ?: throw IllegalStateException("Unable to locate the Power Tools for EF Core plugin folder")
 
     fun tool(fileName: String): Path {
         val path = toolsDir.resolve(fileName)

@@ -1,4 +1,4 @@
-# EF Core Power Tools for Rider
+# Power Tools for EF Core
 
 A JetBrains Rider port of the [EF Core Power Tools](https://github.com/ErikEJ/EFCorePowerTools) Visual Studio extension
 by Erik Ejlskov Jensen. This is an unofficial port; it is not affiliated with or endorsed by the original project.
@@ -47,7 +47,7 @@ Per-feature details are in the `// Rider:` comments in the source.
 ## Building
 
 ```sh
-./gradlew buildPlugin            # -> build/distributions/Rider-EFPT-<version>.zip (install from disk)
+./gradlew buildPlugin            # -> build/distributions/efcore-power-tools-<version>.zip (install from disk)
 ./gradlew test                   # unit tests
 ./gradlew runIde                 # sandbox Rider with the plugin
 ```

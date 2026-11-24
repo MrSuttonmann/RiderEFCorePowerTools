@@ -32,7 +32,7 @@ class AboutDialog(project: Project?) : DialogWrapper(project, false) {
         get() = AboutExtensionModel.extensionVersion?.let { "Version $it" } ?: "Version N/A"
 
     override fun createCenterPanel(): JComponent = panel {
-        row { text("<b>EF Core Power Tools</b> for Rider") }
+        row { text("<b>Power Tools for EF Core</b>") }
         row { label(versionText) }
         // Rider: also show the host IDE version (VS shows only the extension version).
         row { label(ApplicationInfo.getInstance().let { "${it.fullApplicationName} (build ${it.build.asStringWithoutProductCode()})" }) }

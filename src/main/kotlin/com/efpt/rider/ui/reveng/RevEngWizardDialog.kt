@@ -228,7 +228,7 @@ class RevEngWizardDialog(
         onSuccess: (T) -> Unit,
     ) {
         setBusy(true, text)
-        ProgressManager.getInstance().run(object : Task.Backgroundable(ide, "EF Core Power Tools: $text", true) {
+        ProgressManager.getInstance().run(object : Task.Backgroundable(ide, "Power Tools for EF Core: $text", true) {
             private var result: Result<T>? = null
 
             override fun run(indicator: ProgressIndicator) {

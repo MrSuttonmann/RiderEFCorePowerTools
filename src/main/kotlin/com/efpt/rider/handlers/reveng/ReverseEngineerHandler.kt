@@ -22,7 +22,7 @@ import java.io.File
  * Entry points are called on the EDT; implementations run long work in the background.
  */
 object ReverseEngineerHandler {
-    private const val TASK_TITLE = "EF Core Power Tools: Reverse Engineering"
+    private const val TASK_TITLE = "Power Tools for EF Core: Reverse Engineering"
 
     /** ReverseEngineerCodeFirstAsync(uiHint): picks a config file when the project has several. */
     fun reverseEngineerCodeFirst(project: DotNetProject, uiHint: String? = null) {

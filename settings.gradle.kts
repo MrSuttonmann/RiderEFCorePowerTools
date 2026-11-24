@@ -1,1 +1,1 @@
-rootProject.name = "Rider-EFPT"
+rootProject.name = "efcore-power-tools"
