@@ -12,6 +12,7 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.components.ActionLink
 import com.intellij.ui.dsl.builder.AlignX
 import com.intellij.ui.dsl.builder.panel
+import com.intellij.util.ui.JBUI
 import java.awt.Dimension
 import javax.swing.JComponent
 
@@ -84,7 +85,7 @@ object PickServerDatabaseDialog {
                     .applyToComponent { toolTipText = RevEngLocale.ReleaseNotes }
                     .align(AlignX.RIGHT)
             }
-        }.apply { minimumSize = Dimension(420, 160); preferredSize = Dimension(520, preferredSize.height) }
+        }.apply { minimumSize = Dimension(420, 160); preferredSize = Dimension(maxOf(JBUI.scale(520), preferredSize.width), preferredSize.height) }
 
         override fun getPreferredFocusedComponent() = connectionPanel.preferredFocus
     }

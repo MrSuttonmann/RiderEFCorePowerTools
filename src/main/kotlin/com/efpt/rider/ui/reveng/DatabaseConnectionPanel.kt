@@ -22,6 +22,7 @@ import com.intellij.ui.dsl.builder.Row
 import com.intellij.ui.dsl.builder.panel
 import java.awt.event.ActionEvent
 import javax.swing.AbstractAction
+import com.intellij.util.ui.JBUI
 import javax.swing.JButton
 import javax.swing.JComponent
 import javax.swing.JPopupMenu
@@ -32,7 +33,8 @@ import javax.swing.JPopupMenu
  */
 class DatabaseConnectionPanel(private val project: Project, private val wizardMode: Boolean) {
     private val connections = CollectionComboBoxModel<DatabaseConnectionModel>()
-    private val connectionCombo = ComboBox(connections).apply {
+    // Fixed base width: long connection names must not widen the dialog (the combo still fills the row).
+    private val connectionCombo = ComboBox(connections, JBUI.scale(260)).apply {
         renderer = object : com.intellij.ui.ColoredListCellRenderer<DatabaseConnectionModel>() {
             override fun customizeCellRenderer(list: javax.swing.JList<out DatabaseConnectionModel>, value: DatabaseConnectionModel?, index: Int, selected: Boolean, hasFocus: Boolean) {
                 append(value?.displayName ?: "")
