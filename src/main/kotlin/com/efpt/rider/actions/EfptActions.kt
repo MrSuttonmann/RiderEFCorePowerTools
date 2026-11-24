@@ -25,6 +25,9 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.diagnostic.logger
+
+private val LOG = logger<ProjectAction>()
 
 // Ports of EFCorePowerToolsPackage's OnXxxBeforeQueryStatus / OnXxxInvokeHandler pairs.
 
@@ -39,6 +42,7 @@ abstract class ProjectAction : AnAction(), DumbAware {
 
     final override fun actionPerformed(e: AnActionEvent) {
         val project = SolutionProjects.active(e) ?: return
+        LOG.info("${javaClass.simpleName} invoked on ${project.fullPath} (place: ${e.place})")
         try {
             perform(project, e)
         } catch (ex: Exception) {
