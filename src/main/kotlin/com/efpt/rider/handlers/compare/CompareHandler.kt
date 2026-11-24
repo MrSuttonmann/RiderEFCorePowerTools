@@ -16,7 +16,9 @@ object CompareHandler {
     internal const val CANNOT_COMPARE_WHILE_DEBUGGING = "Cannot compare context to database while debugging"
     internal const val CANNOT_SUPPORT_VERSION =
         "Cannot support version {0}, notice that previews have limited support. You can try to manually install Microsoft.EntityFrameworkCore.Design preview."
-    internal const val VERSION_SUPPORTED = "Only EF Core 6 or later is supported."
+    // Rider: upstream CompareLocale still says "Only EF Core 6 or later is supported." although only
+    // EF Core 10 is accepted since #3562; the message states the actual requirement.
+    internal const val VERSION_SUPPORTED = "Only EF Core 10 is supported."
     internal const val INSTALLING_EF_CORE_SCHEMA_COMPARE = "Installing EFCore.SchemaCompare, please retry the command"
     internal const val LOADING_DATA = "Loading data"
     internal const val NO_CONTEXTS_SELECTED = "No contexts selected"
@@ -49,19 +51,14 @@ object CompareHandler {
                     return@runBackground
                 }
                 val major = version[0]
-                if (major !in 6..9) {
+                if (major != 10) {
                     Ui.showError(ideProject, VERSION_SUPPORTED)
                     return@runBackground
                 }
                 indicator.text = INSTALLING_EF_CORE_SCHEMA_COMPARE
                 // Rider: VS runs these `dotnet add package` commands fire-and-forget (and concurrently);
                 // they are run one after the other here so they do not race on the project file.
-                val installs = when (major) {
-                    6 -> listOf("EfCore.SchemaCompare" to "6.0.0")
-                    7 -> listOf("EfCore.SchemaCompare" to "7.0.0", "Microsoft.EntityFrameworkCore.Design" to "7.0.0")
-                    8 -> listOf("EfCore.SchemaCompare" to "8.2.0", "Microsoft.EntityFrameworkCore.Design" to "8.0.0")
-                    else -> listOf("EfCore.SchemaCompare" to "8.2.0", "Microsoft.EntityFrameworkCore.Design" to "9.0.0")
-                }
+                val installs = listOf("EfCore.SchemaCompare" to "10.0.0")
                 for ((id, ver) in installs) {
                     val r = project.installPackage(id, ver)
                     if (!r.success) Ui.logError(ideProject, listOf(r.output), null)

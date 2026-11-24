@@ -12,7 +12,7 @@ teams can mix both IDEs on one config.
 |---|---|---|
 | Project ▸ EF Core Power Tools | Reverse Engineer (wizard), Reverse Engineer (Legacy), Refresh | same |
 | | Data API Builder Scaffold (preview) | same |
-| | Add DbContext Diagram, View DbContext DDL SQL, View DbContext as DebugView, Add AsDgml() extension, Compare DbContext to database | same (net8+ projects referencing EF Core) |
+| | Add DbContext Diagram, View DbContext DDL SQL, View DbContext as DebugView, Add AsDgml() extension, Compare DbContext to database | same (.NET 10+ projects referencing EF Core) |
 | | Visualize Database Schema, ER Diagram, Analyze (preview, SQL projects) | same |
 | | Options, About | same |
 | SQL Database Project | Create EF Core DbContext... | same |
@@ -25,7 +25,10 @@ teams can mix both IDEs on one config.
 ## Requirements
 
 * Rider 2026.3+ (`sinceBuild` 263).
-* .NET 8 runtime (plus .NET 10 for EF Core 10) and a .NET 8+ SDK on PATH (`dotnet msbuild -getProperty` is used to read project properties).
+* .NET 10 runtime and SDK on PATH (`dotnet msbuild -getProperty` is used to read project properties).
+* EF Core 10 and projects targeting .NET 10 or later. Like upstream since
+  [#3562](https://github.com/ErikEJ/EFCorePowerTools/pull/3562), EF Core 8/9 and .NET 8/9/.NET Standard projects are not
+  supported; existing `efpt.config.json` files that select EF Core 8 or 9 are migrated to EF Core 10.
 
 ## Differences from Visual Studio
 
@@ -54,7 +57,7 @@ Per-feature details are in the `// Rider:` comments in the source.
 * **macOS / Linux:** the prebuilt runner zips in that repo are trimmed to Windows native libraries. Build with
   `-PbuildToolsFromSource=true` to `dotnet publish` the runners from source with Windows, Linux and macOS runtimes.
 
-The end-to-end runner test is opt-in: set `EFPT_E2E_RUNNER` (extracted `efreveng80` folder) and `EFPT_E2E_DB`
+The end-to-end runner test is opt-in: set `EFPT_E2E_RUNNER` (extracted `efreveng100` folder) and `EFPT_E2E_DB`
 (SQLite database with `Artist`, `Album`, `AlbumView`) and run `./gradlew test`.
 
 See [docs/PORTING.md](docs/PORTING.md) for the architecture.

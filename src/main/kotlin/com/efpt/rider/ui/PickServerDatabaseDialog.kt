@@ -26,7 +26,7 @@ data class PickServerDatabaseRequest(
     val definitions: List<DatabaseConnectionModel> = emptyList(),
     /** Non-null => schemas are pre-published (filter enabled with these schemas). */
     val schemas: List<SchemaInfo>? = null,
-    val codeGenerationMode: CodeGenerationMode = CodeGenerationMode.EFCore8,
+    val codeGenerationMode: CodeGenerationMode = CodeGenerationMode.EFCore10,
     /** Empty => the EF Core version selector is hidden. A single item with value "DAB" also hides the schema filter. */
     val allowedVersions: List<CodeGenerationItem> = emptyList(),
     val uiHint: String? = null,

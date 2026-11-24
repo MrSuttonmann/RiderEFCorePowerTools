@@ -56,7 +56,7 @@ object DatabaseDiagramHandler {
 
             indicator.text = "Generating database diagram..."
             val schemaList = schemas.orEmpty().mapNotNull { it.name }
-            val diagramPath = EfRevEngLauncher(CodeGenerationMode.EFCore8)
+            val diagramPath = EfRevEngLauncher(CodeGenerationMode.EFCore10)
                 .getDiagram(dbInfo.connectionString ?: "", optionsPath, schemaList)
 
             if (File(diagramPath).exists()) {
@@ -104,7 +104,7 @@ object DatabaseDiagramHandler {
             connections = databaseList,
             definitions = DbTools.definitions(dacpacList),
             schemas = null,
-            codeGenerationMode = CodeGenerationMode.EFCore8,
+            codeGenerationMode = CodeGenerationMode.EFCore10,
             allowedVersions = emptyList(),
             uiHint = connectionName?.takeIf { it.isNotEmpty() },
         )

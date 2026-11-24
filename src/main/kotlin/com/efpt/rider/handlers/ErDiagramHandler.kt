@@ -64,7 +64,7 @@ object ErDiagramHandler {
             indicator.text = DbTools.GENERATING_CODE
             Ui.status(ide, DbTools.GENERATING_CODE)
             val started = System.currentTimeMillis()
-            val cmdPath = EfRevEngLauncher(CodeGenerationMode.EFCore8).getErDiagram(optionsPath, dbInfo.connectionString ?: "")
+            val cmdPath = EfRevEngLauncher(CodeGenerationMode.EFCore10).getErDiagram(optionsPath, dbInfo.connectionString ?: "")
             val elapsed = System.currentTimeMillis() - started
 
             if (File(cmdPath).exists()) {

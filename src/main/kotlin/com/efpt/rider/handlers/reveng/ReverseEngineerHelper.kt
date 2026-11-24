@@ -43,23 +43,11 @@ object ReverseEngineerHelper {
         useHandlebars: Boolean,
         selectedOption: Int = 0,
     ): String {
-        var t4Version = "900"
-        val zipName: String
-        if (useHandlebars) {
-            zipName = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "CodeTemplates800.zip"
-                CodeGenerationMode.EFCore9 -> "CodeTemplates900.zip"
-                CodeGenerationMode.EFCore10 -> "CodeTemplates1000.zip"
-            }
-        } else {
-            t4Version = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "800"
-                CodeGenerationMode.EFCore9 -> "900"
-                CodeGenerationMode.EFCore10 -> "1000"
-            }
-            if (selectedOption == 4) t4Version += "_Split"
-            zipName = "T4_$t4Version.zip"
+        if (codeGenerationMode != CodeGenerationMode.EFCore10) {
+            throw IllegalArgumentException("Unsupported code generation mode for templates: $codeGenerationMode")
         }
+        val t4Version = if (selectedOption == 4) "1000_Split" else "1000"
+        val zipName = if (useHandlebars) "CodeTemplates1000.zip" else "T4_$t4Version.zip"
 
         val userTemplateZip = File(optionsPath, "CodeTemplates.zip")
         val toDir = if (useHandlebars) File(optionsPath, "CodeTemplates") else File(projectPath, "CodeTemplates")
@@ -150,34 +138,26 @@ object ReverseEngineerHelper {
 
     fun isDirectoryEmpty(path: String): Boolean = File(path).list().isNullOrEmpty()
 
-    /** CalculateAllowedVersions: [minimumMajorVersion] is ProjectExtensions.GetEFCoreVersionHintAsync().Major. */
-    fun calculateAllowedVersions(codeGenerationMode: CodeGenerationMode, minimumMajorVersion: Int): Pair<CodeGenerationMode, List<CodeGenerationItem>> {
-        val list = mutableListOf<CodeGenerationItem>()
-        if (minimumMajorVersion >= 10) {
-            list += CodeGenerationItem(CodeGenerationMode.EFCore10.value, "EF Core 10")
-        }
-        if (minimumMajorVersion >= 8 || minimumMajorVersion == 2) {
-            list += CodeGenerationItem(CodeGenerationMode.EFCore8.value, "EF Core 8")
-            list += CodeGenerationItem(CodeGenerationMode.EFCore9.value, "EF Core 9")
-        }
-        if (list.isEmpty()) return codeGenerationMode to list
+    /** CalculateAllowedVersions: EF Core 10 is the only offered version (upstream #3562). */
+    fun calculateAllowedVersions(codeGenerationMode: CodeGenerationMode): Pair<CodeGenerationMode, List<CodeGenerationItem>> {
+        val list = listOf(CodeGenerationItem(CodeGenerationMode.EFCore10.value, "EF Core 10"))
         var mode = codeGenerationMode
         if (list.none { it.key == mode.value }) mode = CodeGenerationMode.fromValue(list.first().key)
         return mode to list
     }
 
-    fun calculateAllowedTemplates(codeGenerationMode: CodeGenerationMode): List<TemplateTypeItem> {
-        // Identical lists for EF Core 8/9 and 10 in the C# original.
-        return when (codeGenerationMode) {
-            CodeGenerationMode.EFCore8, CodeGenerationMode.EFCore9, CodeGenerationMode.EFCore10 -> listOf(
+    fun calculateAllowedTemplates(codeGenerationMode: CodeGenerationMode): List<TemplateTypeItem> =
+        if (codeGenerationMode == CodeGenerationMode.EFCore10) {
+            listOf(
                 TemplateTypeItem(2, "C# - T4"),
                 TemplateTypeItem(4, "C# - T4 (Split DbContext)"),
                 TemplateTypeItem(0, "C# - Handlebars"),
                 TemplateTypeItem(1, "TypeScript - Handlebars"),
                 TemplateTypeItem(3, "C# - T4 (POCO)"),
             )
+        } else {
+            emptyList()
         }
-    }
 
     /** RevEng.Common.DbContextNamer.GetDatabaseName. */
     fun getDatabaseName(connectionString: String?, dbType: DatabaseType): String {

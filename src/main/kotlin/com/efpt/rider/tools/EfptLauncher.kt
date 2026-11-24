@@ -62,18 +62,14 @@ class EfptLauncher(private val project: DotNetProject) {
         return ProcessRunner.run(cl)
     }
 
-    /** Extracts the efpt build that matches the project's EF Core version. */
+    /** Extracts the efpt tool (EF Core 10 only, like upstream ProcessLauncher). */
     private fun dropNetCoreFiles(): Path {
         val target = BundledTools.tempDir.resolve("efpt")
         val version = project.containsEfCoreDesignReference().second
-        val zip = when {
-            version.startsWith("8.") -> "efpt80.exe.zip"
-            version.startsWith("9.") -> "efpt90.exe.zip"
-            version.startsWith("10.") -> "efpt100.exe.zip"
-            else -> throw IllegalStateException(
-                "Unsupported or missing EF Core version '$version' in project ${project.name}. EF Core 8, 9 or 10 is required (Microsoft.EntityFrameworkCore).",
-            )
+        if (version.isEmpty() || !version.startsWith("10.")) {
+            throw UnsupportedOperationException("EF Core $version is no longer supported. Use EF Core 10.")
         }
+        val zip = "efpt100.exe.zip"
         return BundledTools.extractFresh(zip, target)
     }
 

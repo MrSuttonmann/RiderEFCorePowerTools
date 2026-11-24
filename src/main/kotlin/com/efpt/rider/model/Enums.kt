@@ -17,14 +17,20 @@ enum class DatabaseType(val value: Int, val displayName: String) {
     }
 }
 
-/** Mirrors RevEng.Common.CodeGenerationMode. */
-enum class CodeGenerationMode(val value: Int, val displayName: String, val revEngVersion: String) {
-    EFCore8(4, "EF Core 8", "8"),
-    EFCore9(5, "EF Core 9", "9"),
-    EFCore10(6, "EF Core 10", "10");
+/**
+ * Mirrors RevEng.Common.CodeGenerationMode. Values 0-5 must not be reused: 4 and 5 were EF Core 8 and 9,
+ * which upstream removed (ErikEJ/EFCorePowerTools#3562).
+ */
+enum class CodeGenerationMode(val value: Int, val displayName: String) {
+    EFCore10(6, "EF Core 10"),
+    EFCore11(7, "EF Core 11");
 
     companion object {
-        fun fromValue(value: Int): CodeGenerationMode = entries.firstOrNull { it.value == value } ?: EFCore8
+        /**
+         * Persisted EF Core 8/9 modes (4, 5) are migrated to EF Core 10, like the ReverseEngineerOptions
+         * setter upstream. Unknown or missing values also fall back to EF Core 10.
+         */
+        fun fromValue(value: Int): CodeGenerationMode = entries.firstOrNull { it.value == value } ?: EFCore10
     }
 }
 

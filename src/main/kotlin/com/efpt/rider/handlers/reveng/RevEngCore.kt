@@ -186,7 +186,7 @@ internal object RevEngCore {
             DatabaseConnectionModel(filePath = it, databaseType = DatabaseType.SQLServerDacpac, origin = com.efpt.rider.model.ConnectionOrigin.Definition)
         } ?: emptyList()
         val schemas = if (options.filterSchemas && !options.schemas.isNullOrEmpty()) options.schemas!!.toList() else null
-        val (usedMode, allowedVersions) = ReverseEngineerHelper.calculateAllowedVersions(options.codeGenerationMode, session.project.efCoreVersionHint())
+        val (usedMode, allowedVersions) = ReverseEngineerHelper.calculateAllowedVersions(options.codeGenerationMode)
         return ConnectionChoices(connections, definitions, schemas, usedMode, allowedVersions, options.uiHint?.takeIf { it.isNotEmpty() })
     }
 
@@ -424,7 +424,7 @@ internal object RevEngCore {
     // ------------------------------------------------------------------ NuGet
 
     /**
-     * InstallNuGetPackagesAsync. [allowNetStandard]: the wizard handler also installs for .NET Standard projects.
+     * InstallNuGetPackagesAsync (.NET 10+ projects only).
      * Rider: packages are installed with `dotnet add package` and awaited (VS starts the process and moves on).
      */
     fun installNuGetPackages(
@@ -432,12 +432,11 @@ internal object RevEngCore {
         onlyGenerate: Boolean,
         options: ReverseEngineerOptions,
         forceEdit: Boolean,
-        allowNetStandard: Boolean,
         indicator: ProgressIndicator?,
         showStatus: Boolean = true,
     ) {
         if (!options.installNuGetPackage || !(!onlyGenerate || forceEdit)) return
-        if (!(project.isNet80OrHigher() || (allowNetStandard && project.isNetStandard()))) return
+        if (!project.isNet10OrHigher()) return
         val packagesToInstall = neededPackages(project, options).filter { it.databaseTypes.contains(options.databaseType) && !it.installed }
         if (packagesToInstall.isEmpty()) return
         if (showStatus) Ui.status(project.ideProject, RevEngLocale.InstallingEFCoreProviderPackage)
@@ -493,8 +492,6 @@ internal object RevEngCore {
             if (result.isNotEmpty()) Ui.invokeAndWait { com.intellij.openapi.ui.Messages.showWarningDialog(ide, result, Ui.TITLE) }
             Ui.refreshPaths(*listOfNotNull(options.optionsPath, options.projectPath).toTypedArray())
         }
-
-        options.useNullableReferences = !project.isNetStandard() && options.useNullableReferences
 
         progress(2)
         val revEngResult = EfRevEngLauncher.launchExternalRunner(options, options.codeGenerationMode)

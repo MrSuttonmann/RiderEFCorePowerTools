@@ -52,7 +52,7 @@ class EfptConfigurable : BoundConfigurable("EF Core Power Tools") {
                 textFieldWithBrowseButton(FileChooserDescriptorFactory.singleFile().withTitle("Select dotnet Executable"))
                     .bindText({ s.dotnetPath ?: "" }, { s.dotnetPath = it })
                     .align(AlignX.FILL)
-                    .comment("Leave empty to use 'dotnet' from PATH. The .NET 8 (or 10 for EF Core 10) runtime is required.")
+                    .comment("Leave empty to use 'dotnet' from PATH. The .NET 10 runtime is required.")
             }
         }
     }

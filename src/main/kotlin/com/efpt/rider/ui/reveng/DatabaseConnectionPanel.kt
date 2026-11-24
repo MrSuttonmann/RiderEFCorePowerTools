@@ -132,7 +132,7 @@ class DatabaseConnectionPanel(private val project: Project, private val wizardMo
     }
 
     private var dabMode: CodeGenerationMode? = null
-    private var fallbackMode: CodeGenerationMode = CodeGenerationMode.EFCore8
+    private var fallbackMode: CodeGenerationMode = CodeGenerationMode.EFCore10
 
     /** UiHint setter: preselects a connection by name or definition path. */
     var uiHint: String?

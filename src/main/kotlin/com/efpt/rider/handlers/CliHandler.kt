@@ -99,7 +99,7 @@ object CliHandler {
             commandLine,
             onStartFailure = {
                 // Rider: cmd.exe would print "'efcpt' is not recognized..."; give the install command instead.
-                val version = project.efCoreVersionHint().takeIf { it in 8..10 } ?: 10
+                val version = 10 // Upstream only supports EF Core 10 (#3562).
                 listOf(
                     "",
                     "Unable to start the EF Core Power Tools CLI ('efcpt'). Install it with:",

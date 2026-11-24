@@ -13,7 +13,7 @@ import java.io.File
 
 /**
  * End-to-end contract test against the real efreveng runner (opt-in).
- * Set EFPT_E2E_RUNNER to a folder with efreveng80.dll extracted and EFPT_E2E_DB to a SQLite database
+ * Set EFPT_E2E_RUNNER to a folder with efreveng100.dll extracted and EFPT_E2E_DB to a SQLite database
  * containing tables Artist and Album and view AlbumView.
  */
 class EfRevEngContractTest {
@@ -21,7 +21,7 @@ class EfRevEngContractTest {
     private val db = System.getenv("EFPT_E2E_DB")
 
     private fun run(vararg args: String): String {
-        val p = ProcessBuilder(listOf("dotnet", File(runner, "efreveng80.dll").path) + args).redirectErrorStream(false).start()
+        val p = ProcessBuilder(listOf("dotnet", File(runner, "efreveng100.dll").path) + args).redirectErrorStream(false).start()
         val out = p.inputStream.readBytes().toString(Charsets.UTF_8)
         p.waitFor()
         return out

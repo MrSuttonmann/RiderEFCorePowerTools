@@ -17,7 +17,7 @@ object AnalysisSupport {
     const val BUILD_FAILED = "Build failed. Unable to discover a DbContext class."
     const val UNABLE_TO_LOCATE_PROJECT_ASSEMBLY = "Unable to locate project assembly"
     const val SELECTED_PROJECT_TYPE_NO_TFM = "The selected project type has no TargetFrameworkMoniker"
-    const val SUPPORTED_FRAMEWORK = "Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker"
+    const val SUPPORTED_FRAMEWORK = "Only .NET 10 or later projects are supported - TargetFrameworkMoniker"
     const val EF_CORE_VERSION_NOT_FOUND = "EF Core 3.1 or later not found in project"
     const val INSTALLING_EF_CORE_DESIGN_PACKAGE = "Installing EFCore.Design version {0}, please retry the command"
     const val INVALID_NAME = "Invalid name"
@@ -48,7 +48,7 @@ object AnalysisSupport {
     }
 
     /**
-     * The TargetFrameworkMoniker / .NET 8+ checks shared by ModelAnalyzerHandler and CompareHandler.
+     * The TargetFrameworkMoniker / .NET 10+ checks shared by ModelAnalyzerHandler and CompareHandler.
      * Returns false (after showing the VS error) when the project is not supported.
      */
     fun checkTargetFramework(project: DotNetProject): Boolean {
@@ -57,7 +57,7 @@ object AnalysisSupport {
             Ui.showError(project.ideProject, SELECTED_PROJECT_TYPE_NO_TFM)
             return false
         }
-        if (!project.isNet80OrHigher()) {
+        if (!project.isNet10OrHigher()) {
             Ui.showError(project.ideProject, "$SUPPORTED_FRAMEWORK: $tfm")
             return false
         }

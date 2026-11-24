@@ -44,6 +44,16 @@ class DcJsonRoundTripTest {
     }
 
     @Test
+    fun `EF Core 8 and 9 configs are migrated to EF Core 10 like upstream`() {
+        for (legacy in listOf(4, 5)) {
+            val options = ReverseEngineerOptions.fromJson(DcJson.parse("""{"CodeGenerationMode": $legacy}""").asJsonObject)
+            assertEquals(com.efpt.rider.model.CodeGenerationMode.EFCore10, options.codeGenerationMode)
+            assertEquals(6, options.toJson().get("CodeGenerationMode").asInt)
+        }
+        assertEquals(com.efpt.rider.model.CodeGenerationMode.EFCore10, ReverseEngineerOptions().codeGenerationMode)
+    }
+
+    @Test
     fun `strings are escaped like DataContractJsonSerializer`() {
         val o = com.google.gson.JsonObject().apply { put("B", """a/b\c"d"""); put("A", null) }
         assertEquals("""{"A":null,"B":"a\/b\\c\"d"}""", DcJson.write(o, indent = false))

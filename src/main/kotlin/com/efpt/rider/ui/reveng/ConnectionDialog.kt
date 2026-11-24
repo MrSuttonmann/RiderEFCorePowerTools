@@ -117,7 +117,7 @@ object ConnectionDialog {
                 {
                     try {
                         // Use a schema filter that matches nothing: efreveng connects and returns an empty list.
-                        EfRevEngLauncher(CodeGenerationMode.EFCore8)
+                        EfRevEngLauncher(CodeGenerationMode.EFCore10)
                             .getTables(cs, type, listOf(SchemaInfo("__efpt_connection_test__")), false)
                     } catch (e: com.intellij.openapi.progress.ProcessCanceledException) {
                         throw e

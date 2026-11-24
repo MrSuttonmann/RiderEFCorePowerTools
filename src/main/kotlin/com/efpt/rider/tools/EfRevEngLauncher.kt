@@ -19,11 +19,16 @@ import java.nio.file.Path
  * Port of EFCorePowerTools.Handlers.ReverseEngineer.EfRevEngLauncher: drives the bundled
  * efreveng{80,90,100} console app (database access, scaffolding, diagrams, reports).
  */
-class EfRevEngLauncher(private val codeGenerationMode: CodeGenerationMode) {
-    private val revEngVersion = codeGenerationMode.revEngVersion
-    private val exeName = "efreveng${revEngVersion}0.dll"
-    private val zipName = "efreveng${revEngVersion}0.exe.zip"
-    private val folderPrefix = "efreveng$revEngVersion."
+class EfRevEngLauncher(codeGenerationMode: CodeGenerationMode = CodeGenerationMode.EFCore10) {
+    init {
+        if (codeGenerationMode != CodeGenerationMode.EFCore10) {
+            throw UnsupportedOperationException("Only EF Core 10 is supported.")
+        }
+    }
+
+    private val exeName = "efreveng100.dll"
+    private val zipName = "efreveng100.exe.zip"
+    private val folderPrefix = "efreveng10."
 
     /** Returns the database objects (tables, views, routines) of a database or .dacpac. */
     fun getTables(connectionString: String, databaseType: DatabaseType, schemas: List<SchemaInfo>?, mergeDacpacs: Boolean): List<TableModel> {
@@ -70,7 +75,7 @@ class EfRevEngLauncher(private val codeGenerationMode: CodeGenerationMode) {
     }
 
     private fun ensureRuntime() {
-        val version = if (codeGenerationMode == CodeGenerationMode.EFCore10) "10.0" else "8.0"
+        val version = "10.0"
         if (!ProcessRunner.isRuntimeInstalled(version.substringBefore('.'))) {
             throw IllegalStateException(
                 "Reverse engineer error: Unable to launch 'dotnet' version $version. Do you have the runtime installed? Check with 'dotnet --list-runtimes'",

@@ -37,7 +37,7 @@ object DacpacAnalyzerHandler {
 
             progress(ide, indicator, 2)
 
-            val reportPath = EfRevEngLauncher(CodeGenerationMode.EFCore8).getReportPath(dacpacPath, isConnectionString)
+            val reportPath = EfRevEngLauncher(CodeGenerationMode.EFCore10).getReportPath(dacpacPath, isConnectionString)
 
             progress(ide, indicator, 3)
 

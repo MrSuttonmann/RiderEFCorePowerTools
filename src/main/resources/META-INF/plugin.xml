@@ -12,7 +12,7 @@ extension by Erik Ejlskov Jensen (MIT License). Source: <a href="https://github.
   <li>DbContext diagram (DGML), DDL SQL, DebugView and DbContext-to-database comparison</li>
   <li>Database schema diagram, Mermaid ER diagram, SQL project analysis and Data API Builder scaffolding</li>
 </ul>
-<p>Uses the same bundled .NET runners as the Visual Studio extension; the .NET 8 runtime (and .NET 10 for EF Core 10) must be installed.</p>
+<p>Uses the same bundled .NET runners as the Visual Studio extension. Requires EF Core 10, projects targeting .NET 10 or later, and the .NET 10 runtime.</p>
 ]]></description>
 
     <depends>com.intellij.modules.rider</depends>

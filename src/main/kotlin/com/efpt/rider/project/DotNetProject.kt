@@ -52,27 +52,18 @@ class DotNetProject(val ideProject: Project, val projectFile: Path) {
     /** Target framework monikers in short form (net8.0, netstandard2.0, ...). */
     val targetFrameworks: List<String> get() = xml.targetFrameworks
 
-    fun isNet80OrHigher(): Boolean = isNet80() || isNet90() || isNet100()
-    fun isNet80(): Boolean = frameworkCheck("8")
-    fun isNet90(): Boolean = frameworkCheck("9")
-    fun isNet100(): Boolean = frameworkCheck("10") || frameworkCheck("11")
-    fun isNetStandard(): Boolean = targetFrameworks.any { it.startsWith("netstandard2.", true) }
+    /**
+     * ProjectExtensions.IsNet10OrHigherAsync. Upstream's IsNet100 matches .NET 10 and 11 target frameworks;
+     * .NET 8/9 and .NET Standard projects are no longer supported (ErikEJ/EFCorePowerTools#3562).
+     */
+    fun isNet10OrHigher(): Boolean = frameworkCheck("10") || frameworkCheck("11")
 
     private fun frameworkCheck(version: String) = targetFrameworks.any {
         it.equals("net$version.0", true) || it.startsWith("net$version.0-", true)
     }
 
     /** ProjectExtensions.CanUseReverseEngineerAsync. */
-    fun canUseReverseEngineer(): Boolean = isCSharpProject && (isNet80OrHigher() || isNetStandard())
-
-    /** ProjectExtensions.GetEFCoreVersionHintAsync - major version. */
-    fun efCoreVersionHint(): Int = when {
-        isNet100() -> 10
-        isNet90() -> 9
-        isNet80() -> 8
-        isNetStandard() -> 2
-        else -> 3
-    }
+    fun canUseReverseEngineer(): Boolean = isCSharpProject && isNet10OrHigher()
 
     // ------------------------------------------------------------------ config files
 
@@ -216,7 +207,6 @@ class DotNetProject(val ideProject: Project, val projectFile: Path) {
             options.databaseType,
             options.useSpatial,
             options.useNodaTime,
-            options.useDateOnlyTimeOnly,
             options.useHierarchyId,
             discoverMultipleResultSets,
             options.tables?.any { it.objectType == com.efpt.rider.model.ObjectType.Procedure } ?: false,

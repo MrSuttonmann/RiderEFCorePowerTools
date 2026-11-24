@@ -262,7 +262,7 @@ class ReverseEngineerOptions : JsonWritable {
     var useNoDefaultConstructor: Boolean = false
     var useNoNavigations: Boolean = false
     var useManyToManyEntity: Boolean = false
-    var codeGenerationMode: CodeGenerationMode = CodeGenerationMode.EFCore8
+    var codeGenerationMode: CodeGenerationMode = CodeGenerationMode.EFCore10
     var uiHint: String? = null
     var schemas: MutableList<SchemaInfo>? = null
     var preserveCasingWithRegex: Boolean = true

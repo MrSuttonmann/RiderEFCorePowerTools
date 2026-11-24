@@ -91,7 +91,7 @@ object ReverseEngineerHandler {
         val session = RevEngCore.Session(project, optionsPath)
         session.options = ReverseEngineerOptions().apply {
             tables = mutableListOf()
-            codeGenerationMode = CodeGenerationMode.EFCore8
+            codeGenerationMode = CodeGenerationMode.EFCore10
             databaseType = DatabaseType.SQLServerDacpac
             uiHint = sqlProjectPath
             projectRootNamespace = project.getProperty("RootNamespace")
@@ -167,7 +167,7 @@ object ReverseEngineerHandler {
 
         RevEngCore.saveOptions(session, userOptions, options.customReplacers to session.namingOptionsAndPath.second)
 
-        RevEngCore.installNuGetPackages(project, onlyGenerate, options, forceEdit, allowNetStandard = false, indicator = indicator)
+        RevEngCore.installNuGetPackages(project, onlyGenerate, options, forceEdit, indicator = indicator)
 
         val missingProviderPackage = RevEngCore.missingProviderPackage(options, neededPackages)
 

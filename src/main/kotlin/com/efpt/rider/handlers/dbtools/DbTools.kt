@@ -45,7 +45,7 @@ internal object DbTools {
     }
 
     /** The "DAB" entry the DAB / ER diagram / CLI handlers publish with PublishCodeGenerationMode. */
-    val dabCodeGenerationItems = listOf(CodeGenerationItem(CodeGenerationMode.EFCore8.value, "DAB"))
+    val dabCodeGenerationItems = listOf(CodeGenerationItem(CodeGenerationMode.EFCore10.value, "DAB"))
 
     /** VsDataHelper.GetDataConnectionsAsync (+ optional Providers.DabProviders filter). Off the EDT. */
     fun connections(project: Project, dabOnly: Boolean): List<DatabaseConnectionModel> {
@@ -116,7 +116,7 @@ internal object DbTools {
     }
 
     /**
-     * LoadDataBaseObjectsAsync: loads tables (via efreveng, EF Core 8 runner), filters them with [include],
+     * LoadDataBaseObjectsAsync: loads tables (via the efreveng EF Core 10 runner), filters them with [include],
      * shows PickTablesDialog with the options' current tables preselected and stores the selection.
      * Returns false when cancelled or the objects could not be loaded.
      */
@@ -128,7 +128,7 @@ internal object DbTools {
     ): Boolean {
         val predefinedTables: List<TableModel>
         try {
-            val launcher = EfRevEngLauncher(CodeGenerationMode.EFCore8)
+            val launcher = EfRevEngLauncher(CodeGenerationMode.EFCore10)
             val mergeDacpacs = EfptSettings.instance.mergeDacpacs
             val tables = if (!options.dacpac.isNullOrEmpty()) {
                 launcher.getTables(options.dacpac!!, DatabaseType.SQLServerDacpac, null, mergeDacpacs)
@@ -213,7 +213,7 @@ internal object DbTools {
             connections = connections,
             definitions = definitions,
             schemas = emptyList<SchemaInfo>(),
-            codeGenerationMode = CodeGenerationMode.EFCore8,
+            codeGenerationMode = CodeGenerationMode.EFCore10,
             allowedVersions = dabCodeGenerationItems,
             uiHint = uiHint?.takeIf { it.isNotEmpty() },
         )

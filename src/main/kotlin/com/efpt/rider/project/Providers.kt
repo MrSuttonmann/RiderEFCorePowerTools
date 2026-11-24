@@ -65,7 +65,6 @@ object Providers {
             commandOptions.databaseType,
             commandOptions.useSpatial,
             commandOptions.useNodaTime,
-            commandOptions.useDateOnlyTimeOnly,
             commandOptions.useHierarchyId,
             commandOptions.useMultipleSprocResultSets,
             commandOptions.tables?.any { it.objectType == ObjectType.Procedure } ?: false,
@@ -74,11 +73,13 @@ object Providers {
         return getReadMeText(commandOptions, template, packages, redactedConnectionString)
     }
 
+    private fun unsupported(mode: CodeGenerationMode): Nothing =
+        throw UnsupportedOperationException("No provider package for $mode")
+
     fun getNeededPackages(
         databaseType: DatabaseType,
         useSpatial: Boolean,
         useNodaTime: Boolean,
-        useDateOnlyTimeOnly: Boolean,
         useHierarchyId: Boolean,
         discoverMultipleResultSets: Boolean,
         hasProcedures: Boolean,
@@ -90,9 +91,8 @@ object Providers {
         if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac) {
             val sqlTypes = listOf(DatabaseType.SQLServer, DatabaseType.SQLServerDacpac)
             var pkgVersion = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "8.0.30"
-                CodeGenerationMode.EFCore9 -> "9.0.19"
-                CodeGenerationMode.EFCore10 -> "10.0.11"
+                CodeGenerationMode.EFCore10 -> "10.0.15"
+                CodeGenerationMode.EFCore11 -> "11.0.0"
             }
             packages += NuGetPackage("Microsoft.EntityFrameworkCore.SqlServer", pkgVersion, sqlTypes, true, "SqlServer")
 
@@ -106,9 +106,8 @@ object Providers {
 
             if (useNodaTime) {
                 pkgVersion = when (codeGenerationMode) {
-                    CodeGenerationMode.EFCore8 -> "8.0.1"
-                    CodeGenerationMode.EFCore9 -> "9.1.1"
                     CodeGenerationMode.EFCore10 -> "10.0.1"
+                    CodeGenerationMode.EFCore11 -> "11.0.1"
                 }
                 packages += NuGetPackage("SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime", pkgVersion, sqlTypes, false, "NodaTime")
             }
@@ -120,17 +119,15 @@ object Providers {
 
         if (databaseType == DatabaseType.SQLite) {
             var pkgVersion = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "8.0.30"
-                CodeGenerationMode.EFCore9 -> "9.0.19"
-                CodeGenerationMode.EFCore10 -> "10.0.11"
+                CodeGenerationMode.EFCore10 -> "10.0.15"
+                CodeGenerationMode.EFCore11 -> "11.0.0"
             }
             packages += NuGetPackage("Microsoft.EntityFrameworkCore.Sqlite", pkgVersion, listOf(databaseType), true, "Sqlite")
 
             if (useNodaTime) {
                 pkgVersion = when (codeGenerationMode) {
-                    CodeGenerationMode.EFCore8 -> "8.0.0"
-                    CodeGenerationMode.EFCore9 -> "9.1.0"
                     CodeGenerationMode.EFCore10 -> "10.0.0"
+                    else -> unsupported(codeGenerationMode)
                 }
                 packages += NuGetPackage("EntityFrameworkCore.Sqlite.NodaTime", pkgVersion, listOf(databaseType), false, "NodaTime")
             }
@@ -138,9 +135,8 @@ object Providers {
 
         if (databaseType == DatabaseType.Npgsql) {
             val pkgVersion = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "8.0.11"
-                CodeGenerationMode.EFCore9 -> "9.0.4"
                 CodeGenerationMode.EFCore10 -> "10.0.3"
+                else -> unsupported(codeGenerationMode)
             }
             packages += NuGetPackage("Npgsql.EntityFrameworkCore.PostgreSQL", pkgVersion, listOf(databaseType), true, "Npgsql")
 
@@ -154,14 +150,9 @@ object Providers {
         }
 
         if (databaseType == DatabaseType.Mysql) {
-            var prefix = "Pomelo"
-            val pkgVersion = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "8.0.3"
-                CodeGenerationMode.EFCore9 -> "9.0.8"
-                CodeGenerationMode.EFCore10 -> {
-                    prefix = "Microting"
-                    "10.0.10"
-                }
+            val (prefix, pkgVersion) = when (codeGenerationMode) {
+                CodeGenerationMode.EFCore10 -> "Microting" to "10.0.14"
+                else -> unsupported(codeGenerationMode)
             }
             packages += NuGetPackage("$prefix.EntityFrameworkCore.MySql", pkgVersion, listOf(databaseType), true, "Mysql")
 
@@ -172,30 +163,21 @@ object Providers {
 
         if (databaseType == DatabaseType.Oracle) {
             val pkgVersion = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "8.23.26300"
-                CodeGenerationMode.EFCore9 -> "9.23.26300"
                 CodeGenerationMode.EFCore10 -> "10.23.26200"
+                else -> unsupported(codeGenerationMode)
             }
             packages += NuGetPackage("Oracle.EntityFrameworkCore", pkgVersion, listOf(databaseType), true, "Oracle")
         }
 
         if (databaseType == DatabaseType.Firebird) {
             val pkgVersion = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "11.0.0"
-                CodeGenerationMode.EFCore9 -> "12.0.0"
                 CodeGenerationMode.EFCore10 -> "13.0.0"
+                else -> unsupported(codeGenerationMode)
             }
             packages += NuGetPackage("FirebirdSql.EntityFrameworkCore.Firebird", pkgVersion, listOf(databaseType), true, "Firebird")
         }
 
-        if (databaseType == DatabaseType.Snowflake) {
-            val pkgVersion = when (codeGenerationMode) {
-                CodeGenerationMode.EFCore8 -> "8.0.8"
-                CodeGenerationMode.EFCore9 -> "9.0.4"
-                CodeGenerationMode.EFCore10 -> throw NotImplementedError()
-            }
-            packages += NuGetPackage("EFCore.Snowflake", pkgVersion, listOf(databaseType), true, "Snowflake")
-        }
+        // Snowflake: upstream has no EF Core 10 provider package yet (commented out in Providers.cs).
 
         return packages
     }

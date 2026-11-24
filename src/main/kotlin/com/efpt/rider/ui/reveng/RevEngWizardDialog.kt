@@ -303,7 +303,7 @@ class RevEngWizardDialog(
 
             // ChooseDataBaseConnectionAsync result (the wizard page returns its current values immediately)
             applyPage1ToOptions(s)
-            if (s.newOptions) s.options.useDateOnlyTimeOnly = s.options.codeGenerationMode == CodeGenerationMode.EFCore8
+            if (s.newOptions) s.options.useDateOnlyTimeOnly = s.options.codeGenerationMode == CodeGenerationMode.EFCore10
 
             page1Initialized = true
             updateButtons()
@@ -422,7 +422,7 @@ class RevEngWizardDialog(
         runAsync(RevEngLocale.StatusbarGeneratingFiles, { indicator ->
             RevEngCore.applyModelResult(options, model)
             RevEngCore.saveOptions(s, userOptions, options.customReplacers to s.namingOptionsAndPath.second)
-            RevEngCore.installNuGetPackages(project, false, options, false, allowNetStandard = true, indicator = indicator, showStatus = false)
+            RevEngCore.installNuGetPackages(project, false, options, false, indicator = indicator, showStatus = false)
             val neededPackages = RevEngCore.neededPackages(project, options)
             val missingProviderPackage = RevEngCore.missingProviderPackage(options, neededPackages)
             val status = RevEngCore.generateFiles(project, options, missingProviderPackage, false, neededPackages, isCalledByWizard = true, indicator = indicator)

@@ -50,10 +50,10 @@ abstract class ProjectAction : AnAction(), DumbAware {
     protected abstract fun perform(project: DotNetProject, e: AnActionEvent)
 }
 
-/** Visible for net8+ projects referencing Microsoft.EntityFrameworkCore. */
+/** Visible for .NET 10+ projects referencing Microsoft.EntityFrameworkCore. */
 abstract class EfModelAction : ProjectAction() {
     override fun isVisible(project: DotNetProject) =
-        project.isNet80OrHigher() && project.referencesPackageQuick("Microsoft.EntityFrameworkCore")
+        project.isNet10OrHigher() && project.referencesPackageQuick("Microsoft.EntityFrameworkCore")
 }
 
 class EfptProjectGroup : DefaultActionGroup(), DumbAware {

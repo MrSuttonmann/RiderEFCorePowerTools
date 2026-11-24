@@ -83,10 +83,10 @@ val efptLib = efptRepo.dir("src/GUI/lib")
 val efptGui = efptRepo.dir("src/GUI/EFCorePowerTools")
 
 val toolFiles = listOf(
-    "efreveng80.exe.zip", "efreveng90.exe.zip", "efreveng100.exe.zip",
-    "efpt80.exe.zip", "efpt90.exe.zip", "efpt100.exe.zip",
+    "efreveng100.exe.zip",
+    "efpt100.exe.zip",
     "DacFX161.zip",
-    "T4_800.zip", "T4_800_Split.zip", "T4_900.zip", "T4_900_Split.zip", "T4_1000.zip", "T4_1000_Split.zip",
+    "T4_1000.zip", "T4_1000_Split.zip",
 )
 
 // The prebuilt efreveng zips in the EF Core Power Tools repo are trimmed for Windows (non-Windows native
@@ -95,8 +95,6 @@ val toolFiles = listOf(
 val buildToolsFromSource = providers.gradleProperty("buildToolsFromSource").map { it.toBoolean() }.getOrElse(false)
 val efptCore = efptRepo.dir("src/Core")
 val runnerProjects = mapOf(
-    "efreveng80" to "efreveng80/efreveng80.csproj",
-    "efreveng90" to "efreveng90/efreveng90.csproj",
     "efreveng100" to "efreveng100/efreveng100.csproj",
 )
 val runnerZipTasks = runnerProjects.map { (name, csproj) ->
@@ -132,7 +130,7 @@ val collectTools = tasks.register<Sync>("collectTools") {
     } else {
         from(efptLib) { include(toolFiles) }
     }
-    from(efptGui) { include("CodeTemplates800.zip", "CodeTemplates900.zip", "CodeTemplates1000.zip") }
+    from(efptGui) { include("CodeTemplates1000.zip") }
     into(layout.buildDirectory.dir("tools"))
     val required = toolFiles
     val libPath = efptLib.asFile.absolutePath
