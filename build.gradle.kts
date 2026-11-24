@@ -56,6 +56,8 @@ dependencies {
         bundledModule("intellij.rider.model.generated")
         bundledModule("intellij.rider.rdclient.dotnet")
         testFramework(TestFrameworkType.Platform)
+        // Marketplace ZIP Signer: signs the plugin when CERTIFICATE_CHAIN / PRIVATE_KEY are set.
+        zipSigner()
     }
     testImplementation("junit:junit:4.13.2")
 }
@@ -63,6 +65,11 @@ dependencies {
 intellijPlatform {
     buildSearchableOptions = false
     instrumentCode = false
+    // JetBrains Marketplace. Token: PUBLISH_TOKEN env var. Signing (optional): CERTIFICATE_CHAIN,
+    // PRIVATE_KEY and PRIVATE_KEY_PASSWORD env vars. Channel: -PpublishChannel=beta (default: "default").
+    publishing {
+        channels = providers.gradleProperty("publishChannel").map { listOf(it) }.orElse(listOf("default"))
+    }
     pluginConfiguration {
         id = "io.github.mrsuttonmann.efcorepowertools"
         name = providers.gradleProperty("pluginName")

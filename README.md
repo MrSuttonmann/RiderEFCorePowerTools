@@ -76,6 +76,17 @@ See [docs/PORTING.md](docs/PORTING.md) for the architecture.
   The tag (without the `v`) becomes the plugin version. Tags containing `-` (e.g. `v0.2.0-beta1`) are marked as
   pre-releases. Release builds compile the .NET runners from source so the plugin works on Windows, macOS and Linux.
 
+  The same workflow uploads the build to the [JetBrains Marketplace](https://plugins.jetbrains.com) when these
+  repository secrets are set (Settings ▸ Secrets and variables ▸ Actions):
+
+  | Secret | Purpose |
+  |---|---|
+  | `PUBLISH_TOKEN` | Marketplace token (plugins.jetbrains.com ▸ My Tokens). Without it the upload is skipped. |
+  | `CERTIFICATE_CHAIN`, `PRIVATE_KEY`, `PRIVATE_KEY_PASSWORD` | Optional [plugin signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html); unsigned when absent. |
+
+  Pre-release tags are published to the Marketplace `beta` channel; other tags to the default channel. Each tag must be
+  a version the Marketplace has not seen before.
+
 Both workflows take the runners from `ErikEJ/EFCorePowerTools` at the commit pinned in `EFPT_REF`; update it to pick up
 upstream changes.
 
