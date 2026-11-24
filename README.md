@@ -59,6 +59,23 @@ The end-to-end runner test is opt-in: set `EFPT_E2E_RUNNER` (extracted `efreveng
 
 See [docs/PORTING.md](docs/PORTING.md) for the architecture.
 
+## CI and releases
+
+* **Build** (`.github/workflows/build.yml`): every push to `main` and every pull request builds and tests the plugin
+  and uploads the zip as a workflow artifact.
+* **Release** (`.github/workflows/release.yml`): push a version tag to publish a GitHub release with the installable zip:
+
+  ```sh
+  git tag v0.2.0
+  git push origin v0.2.0
+  ```
+
+  The tag (without the `v`) becomes the plugin version. Tags containing `-` (e.g. `v0.2.0-beta1`) are marked as
+  pre-releases. Release builds compile the .NET runners from source so the plugin works on Windows, macOS and Linux.
+
+Both workflows take the runners from `ErikEJ/EFCorePowerTools` at the commit pinned in `EFPT_REF`; update it to pick up
+upstream changes.
+
 ## Credits and license
 
 All functionality originates from [EF Core Power Tools](https://github.com/ErikEJ/EFCorePowerTools)

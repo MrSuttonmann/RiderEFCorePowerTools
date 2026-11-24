@@ -1,0 +1,65 @@
+name: Release
+
+# Push a tag like v0.2.0 to build the plugin and publish a GitHub release with the installable zip.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+env:
+  EFPT_REPOSITORY: ErikEJ/EFCorePowerTools
+  EFPT_REF: 0c1f6ad3daaa1ccfd52d276cdbf3b668bd3095e0
+
+jobs:
+  release:
+    # Windows matches the environment the from-source runner build was verified on.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check out EF Core Power Tools
+        uses: actions/checkout@v7
+        with:
+          repository: ${{ env.EFPT_REPOSITORY }}
+          ref: ${{ env.EFPT_REF }}
+          path: .efpt
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+
+      # The runners are published from source so the release works on Windows, macOS and Linux
+      # (the prebuilt upstream zips only contain Windows native libraries).
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Determine version
+        id: version
+        shell: bash
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and test
+        shell: bash
+        run: >
+          ./gradlew buildPlugin test --console=plain
+          -PefptRepo=.efpt
+          -PbuildToolsFromSource=true
+          -PpluginVersion=${{ steps.version.outputs.version }}
+
+      - name: Create GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "$GITHUB_REF_NAME" build/distributions/*.zip
+          --title "$GITHUB_REF_NAME"
+          --generate-notes
+          $([[ "$GITHUB_REF_NAME" == *-* ]] && echo --prerelease)

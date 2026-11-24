@@ -1,0 +1,60 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Source of the bundled .NET runners (efreveng / efpt / templates). Pinned for reproducible builds;
+  # bump deliberately when picking up upstream fixes.
+  EFPT_REPOSITORY: ErikEJ/EFCorePowerTools
+  EFPT_REF: 0c1f6ad3daaa1ccfd52d276cdbf3b668bd3095e0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check out EF Core Power Tools
+        uses: actions/checkout@v7
+        with:
+          repository: ${{ env.EFPT_REPOSITORY }}
+          ref: ${{ env.EFPT_REF }}
+          path: .efpt
+          sparse-checkout: |
+            src/GUI/lib
+            src/GUI/EFCorePowerTools
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Build and test
+        run: ./gradlew buildPlugin test -PefptRepo=.efpt --console=plain
+
+      - name: Upload plugin
+        uses: actions/upload-artifact@v7
+        with:
+          name: Rider-EFPT-${{ github.sha }}
+          path: build/distributions/*.zip
+          if-no-files-found: error
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-reports
+          path: build/reports/tests

@@ -48,9 +48,8 @@ dependencies {
         if (localRider != null) {
             local(localRider.absolutePath)
         } else {
-            rider(providers.gradleProperty("riderVersion")) {
-                useInstaller = false
-            }
+            // Installer distribution for the current OS (the multi-OS maven archive is ~4.5 GB).
+            rider(providers.gradleProperty("riderVersion"))
         }
         bundledPlugin("com.intellij.database")
         bundledModule("intellij.rider")
