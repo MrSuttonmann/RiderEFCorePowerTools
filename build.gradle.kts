@@ -58,6 +58,8 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
         // Marketplace ZIP Signer: signs the plugin when CERTIFICATE_CHAIN / PRIVATE_KEY are set.
         zipSigner()
+        // Same checks as the Marketplace "Verification" tab: ./gradlew verifyPlugin
+        pluginVerifier()
     }
     testImplementation("junit:junit:4.13.2")
 }
@@ -67,6 +69,10 @@ intellijPlatform {
     instrumentCode = false
     // JetBrains Marketplace. Token: PUBLISH_TOKEN env var. Signing (optional): CERTIFICATE_CHAIN,
     // PRIVATE_KEY and PRIVATE_KEY_PASSWORD env vars. Channel: -PpublishChannel=beta (default: "default").
+    pluginVerification {
+        // Verifies against the Rider used to build (local install or riderVersion).
+        ides { current() }
+    }
     publishing {
         channels = providers.gradleProperty("publishChannel").map { listOf(it) }.orElse(listOf("default"))
     }

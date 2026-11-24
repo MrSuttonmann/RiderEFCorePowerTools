@@ -7,6 +7,7 @@ import com.intellij.database.access.DatabaseCredentials
 import com.intellij.database.dataSource.LocalDataSource
 import com.intellij.database.dataSource.LocalDataSourceManager
 import com.intellij.database.psi.DbElement
+import com.intellij.database.util.DbImplUtil
 import com.intellij.database.view.DatabaseView
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -59,12 +60,11 @@ internal object RiderDataSources {
 
     /** The data source of the Database tool window selection; cheap (no password access). */
     fun selected(e: AnActionEvent): LocalDataSource? {
-        e.getData(DatabaseView.DATABASE_RELATED_SINGLE_DATA_SOURCE)?.localDataSource?.let { return it }
         val element = e.getData(DatabaseView.DB_ELEMENTS)?.firstOrNull()
             ?: e.getData(LangDataKeys.PSI_ELEMENT_ARRAY)?.filterIsInstance<DbElement>()?.firstOrNull()
             ?: e.getData(CommonDataKeys.PSI_ELEMENT) as? DbElement
             ?: return null
-        return element.dataSource.delegate as? LocalDataSource
+        return DbImplUtil.getMaybeLocalDataSource(element.dataSource)
     }
 
     fun selectedName(e: AnActionEvent): String? = selected(e)?.name

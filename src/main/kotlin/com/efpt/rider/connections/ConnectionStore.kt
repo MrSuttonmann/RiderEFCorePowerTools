@@ -49,9 +49,9 @@ class ConnectionStore : SimplePersistentStateComponent<ConnectionStore.StoreStat
     fun save(model: DatabaseConnectionModel): String {
         val name = model.connectionName?.takeIf { it.isNotBlank() }
             ?: savedConnectionName(model.connectionString ?: "", model.databaseType)
-        state.connections.removeIf { it.name == name }
-        state.connections.add(SavedConnection().apply { this.name = name; databaseType = model.databaseType.value })
-        state.intIncrementModificationCount()
+        // Assigning a new list (rather than mutating in place) marks the state as modified.
+        state.connections = (state.connections.filter { it.name != name } +
+            SavedConnection().apply { this.name = name; databaseType = model.databaseType.value }).toMutableList()
         PasswordSafe.instance.set(attributes(name), Credentials(name, model.connectionString ?: ""))
         model.connectionName = name
         return name
@@ -73,8 +73,7 @@ class ConnectionStore : SimplePersistentStateComponent<ConnectionStore.StoreStat
     }
 
     fun remove(name: String) {
-        state.connections.removeIf { it.name == name }
-        state.intIncrementModificationCount()
+        state.connections = state.connections.filter { it.name != name }.toMutableList()
         PasswordSafe.instance.set(attributes(name), null)
     }
 

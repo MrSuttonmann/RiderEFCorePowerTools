@@ -6,7 +6,6 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.diagnostic.logger
-import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.OpenFileDescriptor
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.openapi.progress.ProgressIndicator
@@ -74,12 +73,12 @@ object Ui {
 
     /** VS.Documents.OpenAsync. */
     fun openFile(project: Project, path: String, focus: Boolean = true) = onEdt {
-        refreshAndFind(path)?.let { FileEditorManager.getInstance(project).openTextEditor(OpenFileDescriptor(project, it), focus) }
+        refreshAndFind(path)?.let { OpenFileDescriptor(project, it).navigate(focus) }
     }
 
-    /** VS.Documents.OpenInPreviewTabAsync - Rider opens markdown with the preview editor when available. */
+    /** VS.Documents.OpenInPreviewTabAsync - opens with the file's default editor (markdown preview, image viewer). */
     fun openPreview(project: Project, path: String) = onEdt {
-        refreshAndFind(path)?.let { FileEditorManager.getInstance(project).openFile(it, true) }
+        refreshAndFind(path)?.let { OpenFileDescriptor(project, it).navigate(true) }
     }
 
     /** Refresh the VFS for files/folders written by an external process (VS picks these up automatically). */

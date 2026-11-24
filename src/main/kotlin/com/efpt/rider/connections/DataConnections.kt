@@ -3,6 +3,7 @@ package com.efpt.rider.connections
 import com.efpt.rider.model.DatabaseConnectionModel
 import com.efpt.rider.model.DatabaseType
 import com.efpt.rider.util.Ui
+import com.intellij.ide.plugins.PluginManager
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.extensions.PluginId
@@ -19,7 +20,7 @@ object DataConnections {
     val isDatabasePluginEnabled: Boolean
         get() {
             val id = PluginId.getId(DATABASE_PLUGIN_ID)
-            return PluginManagerCore.getPlugin(id) != null && !PluginManagerCore.isDisabled(id)
+            return PluginManager.isPluginInstalled(id) && !PluginManagerCore.isDisabled(id)
         }
 
     /**

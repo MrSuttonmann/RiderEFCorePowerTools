@@ -38,8 +38,8 @@ import javax.swing.tree.TreeModel
 import javax.swing.tree.TreePath
 
 internal object ObjectTreeIcons {
-    private val tableWithoutKey: Icon = LayeredIcon(AllIcons.Nodes.DataTables, AllIcons.Nodes.WarningMark)
-    val primaryKey: Icon = LayeredIcon(AllIcons.Nodes.DataColumn, AllIcons.Modifiers.Key)
+    private val tableWithoutKey: Icon = LayeredIcon.layeredIcon(arrayOf(AllIcons.Nodes.DataTables, AllIcons.Nodes.WarningMark))
+    val primaryKey: Icon = LayeredIcon.layeredIcon(arrayOf(AllIcons.Nodes.DataColumn, AllIcons.Modifiers.Key))
     val column: Icon get() = AllIcons.Nodes.DataColumn
     val schema: Icon get() = AllIcons.Nodes.DataSchema
 

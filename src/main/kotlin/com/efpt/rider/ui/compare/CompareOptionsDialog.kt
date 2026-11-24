@@ -12,7 +12,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.CheckBoxList
-import com.intellij.ui.SimpleListCellRenderer
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.ui.JBUI
 import java.awt.BorderLayout
@@ -41,7 +41,7 @@ class CompareOptionsDialog(
     }
     private val connectionCombo = ComboBox(connectionModel).apply {
         // DisplayMemberPath="ConnectionName"
-        renderer = SimpleListCellRenderer.create("") { it.connectionName ?: it.displayName }
+        renderer = textListCellRenderer("") { it.connectionName ?: it.displayName }
         selectedItem = null
     }
     private val removeButton = JButton(AllIcons.Actions.Cancel).apply {

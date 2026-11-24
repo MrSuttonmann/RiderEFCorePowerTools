@@ -143,7 +143,8 @@ class PickTablesPanel(private val project: Project, parentDisposable: Disposable
         // Rename context menu ("Rename  F2", wizard page) on tables and on columns of selected tables.
         val renameAction = object : AnAction(PickTablesTexts.RENAME, null, AllIcons.Actions.Edit) {
             init {
-                shortcutSet = CustomShortcutSet(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0))
+                // Shows "F2" in the menu; the key itself is handled by the tree's input map.
+                registerCustomShortcutSet(CustomShortcutSet(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0)), null)
             }
 
             override fun getActionUpdateThread() = ActionUpdateThread.EDT

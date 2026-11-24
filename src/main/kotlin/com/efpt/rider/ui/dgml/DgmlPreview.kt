@@ -71,7 +71,7 @@ object DgmlPreview {
                 "Diagram of ${dgml.name} ($count nodes). Rider has no DGML viewer: the diagram was rendered to SVG; the .dgml file is at ${dgml.path}",
                 NotificationType.INFORMATION,
             )
-            .addAction(NotificationAction.createSimple("Open in browser") { BrowserUtil.browse(htmlFile) })
+            .addAction(NotificationAction.createSimple("Open in browser") { BrowserUtil.browse(htmlFile.toURI()) })
             .addAction(NotificationAction.createSimple("Open .dgml") { Ui.openFile(project, dgml.path) })
             .notify(project)
     }

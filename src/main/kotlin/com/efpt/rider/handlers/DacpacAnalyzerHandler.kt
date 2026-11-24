@@ -75,7 +75,7 @@ object DacpacAnalyzerHandler {
             } catch (e: Exception) {
                 LOG.warn("Unable to show the report in the IDE, opening the default browser", e)
             }
-            BrowserUtil.browse(File(reportPath))
+            BrowserUtil.browse(File(reportPath).toURI())
         }
     }
 }
