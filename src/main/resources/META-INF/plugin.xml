@@ -36,6 +36,9 @@ extension by Erik Ejlskov Jensen (MIT License). Source: <a href="https://github.
 
             <action id="EFCorePowerTools.ReverseEngineer" class="com.efpt.rider.actions.ReverseEngineerAction"
                     text="Reverse Engineer" description="Generate a DbContext and entity classes from a database"/>
+            <!-- On SQL Database Projects: same command as "Create EF Core DbContext..." below, where users look for it -->
+            <action id="EFCorePowerTools.SqlprojReverseEngineer" class="com.efpt.rider.actions.SqlprojCreateAction"
+                    text="Reverse Engineer" description="Reverse engineer this database project into a C# project"/>
             <action id="EFCorePowerTools.ReverseEngineerLegacy" class="com.efpt.rider.actions.ReverseEngineerLegacyAction"
                     text="Reverse Engineer (Legacy)" description="Reverse engineer using the separate-dialog workflow"/>
             <action id="EFCorePowerTools.ReverseEngineerRefresh" class="com.efpt.rider.actions.ReverseEngineerRefreshAction"
