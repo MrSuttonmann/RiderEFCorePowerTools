@@ -9,6 +9,7 @@ import com.intellij.database.dataSource.LocalDataSourceManager
 import com.intellij.database.psi.DbElement
 import com.intellij.database.util.DbImplUtil
 import com.intellij.database.view.DatabaseView
+import com.intellij.database.view.getSelectedDataSources
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.LangDataKeys
@@ -60,6 +61,8 @@ internal object RiderDataSources {
 
     /** The data source of the Database tool window selection; cheap (no password access). */
     fun selected(e: AnActionEvent): LocalDataSource? {
+        // Data source nodes (and their children) in the Database tool window
+        e.dataContext.getSelectedDataSources().firstOrNull()?.let { DbImplUtil.getMaybeLocalDataSource(it) }?.let { return it }
         val element = e.getData(DatabaseView.DB_ELEMENTS)?.firstOrNull()
             ?: e.getData(LangDataKeys.PSI_ELEMENT_ARRAY)?.filterIsInstance<DbElement>()?.firstOrNull()
             ?: e.getData(CommonDataKeys.PSI_ELEMENT) as? DbElement
